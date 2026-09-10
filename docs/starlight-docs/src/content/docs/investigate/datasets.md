@@ -14,9 +14,8 @@ For log analytics use cases, datasets are the recommended way to define the data
 An index pattern identifies a set of OpenSearch indexes by name and knows their fields and time field — and nothing more. A dataset adds the context that makes logs and traces easier to work with:
 
 - **Signal typing**: A dataset declares whether it holds logs or traces. OpenSearch Dashboards uses this to route the dataset to the right specialized page — a logs dataset opens in **Discover** > **Logs**, a traces dataset in **Discover** > **Traces**. Index patterns are untyped, so the experience cannot be tailored to the signal.
-- **OpenTelemetry schema mappings**: Datasets map non-standard field names to OpenTelemetry concepts (trace ID, span ID, service name, timestamp). This is what powers [correlations](/docs/investigate/correlations/) -- jumping from a log entry to the trace that produced it -- even when the raw data does not use OpenTelemetry field names.
-- **Query-language awareness**: The query bar tailors the language selector to the dataset. When the data source's engine and version are known, languages that engine cannot run are hidden; when they are not known (or for a local-cluster dataset), the full set stays available.
-- **Cross-cluster reach**: A dataset can reference indexes on remote clusters through cross-cluster search, so a single definition can span clusters -- something an index pattern cannot express.
+- **OpenTelemetry schema mappings**: Datasets map non-standard field names to OpenTelemetry concepts (trace ID, span ID, service name, timestamp), even when the raw data does not use OpenTelemetry field names.
+- **Correlation**: Because fields are mapped to OpenTelemetry concepts, datasets power [correlations](/docs/investigate/correlations/) -- jumping from a log entry to the trace that produced it.
 - **User-friendly definitions**: Datasets get descriptive names and descriptions instead of relying on raw index pattern syntax, and are shared across a workspace so teams use a common vocabulary for their data.
 
 ### Datasets vs. index patterns at a glance
@@ -24,9 +23,8 @@ An index pattern identifies a set of OpenSearch indexes by name and knows their 
 | Aspect | Index pattern | Dataset |
 |:-------|:--------------|:--------|
 | Signal typing | None | Logs or traces |
-| OpenTelemetry schema mappings and correlation | None | Yes |
-| Query-language awareness | None | Hides languages the engine cannot run when engine and version are known |
-| Cross-cluster data | Local cluster only | Remote clusters via cross-cluster search |
+| OpenTelemetry schema mappings | None | Yes |
+| Correlation between logs and traces | None | Yes |
 | Friendly name and description | Limited | Yes |
 | Where it appears | Classic Discover | Observability workspace (Discover Logs and Traces, and when creating visualizations) |
 
@@ -127,14 +125,14 @@ To analyze traces datasets, follow these steps:
 Datasets do not introduce a separate store. A saved dataset is persisted as an `index-pattern` saved object, with the dataset-specific attributes (such as signal type and schema mappings) carried alongside on the same object. (Ad-hoc datasets are held as temporary, in-memory index patterns with no backing saved object.) This is what allows saved datasets and index patterns to coexist:
 
 - **Shared storage, no migration.** A dataset created in an observability workspace is visible as an index pattern to the classic Discover experience, and an existing index pattern appears in the dataset selector. There is no separate set of definitions to keep in sync.
-- **Existing workflows keep working.** Teams using the classic Discover experience continue to work with index patterns exactly as before. They simply do not see the dataset-only enhancements (signal typing, OpenTelemetry correlation, cross-cluster reach, and per-dataset language support).
+- **Existing workflows keep working.** Teams using the classic Discover experience continue to work with index patterns exactly as before. They simply do not see the dataset-only enhancements (signal typing and OpenTelemetry schema mappings for correlation).
 - **The management view is workspace-scoped.** The **Datasets** management page appears inside an observability workspace; outside of it, the navigation shows the classic **Index patterns** page. Both operate on the same underlying objects.
 
 As a result, teams can adopt datasets when they move to an observability workspace without losing access to data defined elsewhere, and can transition team by team rather than all at once.
 
 ## Enabling datasets
 
-Datasets are surfaced through the observability workspace and its Discover experience, which is configured at the cluster level. The intended setup enables the workspace, data source, and Explore experiences together:
+Datasets are surfaced through the observability workspace and its Discover experience, which is configured at the cluster level. The intended setup enables the workspace, data source, and new Discover experiences together:
 
 ```yaml
 data_source.enabled: true
@@ -142,4 +140,4 @@ workspace.enabled: true
 explore.enabled: true
 ```
 
-Enabling the Explore experience also turns on the related query settings it depends on (such as the new saved-queries UI, query enhancements, the new home page, and the default theme). The `workspace` and `data_source` flags are independent and must be enabled separately, as shown above. Once configured, create and manage datasets from the **Datasets** page inside an observability workspace.
+Enabling the new Discover experience also turns on the related query settings it depends on (such as the new saved-queries UI, query enhancements, the new home page, and the default theme). The `workspace` and `data_source` flags are independent and must be enabled separately, as shown above. Once configured, create and manage datasets from the **Datasets** page inside an observability workspace.
