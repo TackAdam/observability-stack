@@ -30,10 +30,6 @@ An index pattern identifies a set of OpenSearch indexes by name and knows their 
 | Friendly name and description | Limited | Yes |
 | Where it appears | Classic Discover | Observability workspace (Discover Logs and Traces, and when creating visualizations) |
 
-:::note
-Some of these capabilities -- engine- and version-aware language support, remote-cluster datasets, and persisted schema mappings -- are part of the newer Discover and Explore experience. Older builds expose a static language list without version gating.
-:::
-
 ## Dataset types
 
 OpenSearch supports the following dataset types.
