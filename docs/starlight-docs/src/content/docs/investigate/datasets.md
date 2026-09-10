@@ -13,22 +13,22 @@ For log analytics use cases, datasets are the recommended way to define the data
 
 An index pattern identifies a set of OpenSearch indexes by name and knows their fields and time field — and nothing more. A dataset adds the context that makes logs and traces easier to work with:
 
-- **Signal typing**: A dataset declares whether it holds logs, traces, or metrics. OpenSearch Dashboards uses this to route the dataset to the right specialized page — a logs dataset opens in **Discover** > **Logs**, a traces dataset in **Discover** > **Traces**. Index patterns are untyped, so the experience cannot be tailored to the signal.
+- **Signal typing**: A dataset declares whether it holds logs or traces. OpenSearch Dashboards uses this to route the dataset to the right specialized page — a logs dataset opens in **Discover** > **Logs**, a traces dataset in **Discover** > **Traces**. Index patterns are untyped, so the experience cannot be tailored to the signal.
 - **OpenTelemetry schema mappings**: Datasets map non-standard field names to OpenTelemetry concepts (trace ID, span ID, service name, timestamp). This is what powers [correlations](/docs/investigate/correlations/) -- jumping from a log entry to the trace that produced it -- even when the raw data does not use OpenTelemetry field names.
 - **Query-language awareness**: Each dataset knows which query languages it supports (for example, PPL and SQL), and the query bar adjusts the language selector accordingly. Language support can also account for the data source's engine and version.
-- **Beyond OpenSearch indexes**: Because a dataset has a typed, pluggable backing source, it can represent data that an index pattern cannot -- such as Amazon S3 and data-lake tables, Prometheus metrics, or remote clusters accessed through cross-cluster search.
+- **Beyond OpenSearch indexes**: Because a dataset has a typed, pluggable backing source, it can represent data that an index pattern cannot -- such as Amazon S3 and data-lake tables, or remote clusters accessed through cross-cluster search.
 - **User-friendly definitions**: Datasets get descriptive names and descriptions instead of relying on raw index pattern syntax, and are shared across a workspace so teams use a common vocabulary for their data.
 
 ### Datasets vs. index patterns at a glance
 
 | Aspect | Index pattern | Dataset |
 |:-------|:--------------|:--------|
-| Signal typing | None | Logs, traces, or metrics |
+| Signal typing | None | Logs or traces |
 | OpenTelemetry schema mappings and correlation | None | Yes |
 | Query-language awareness | None | Per-type supported languages, engine and version aware |
-| Non-OpenSearch sources | OpenSearch indexes only | S3, Prometheus, remote clusters |
+| Non-OpenSearch sources | OpenSearch indexes only | S3, remote clusters |
 | Friendly name and description | Limited | Yes |
-| Where it appears | Classic Discover | Observability workspace (Discover Logs and Traces) |
+| Where it appears | Classic Discover | Observability workspace (Discover Logs and Traces, and when creating visualizations) |
 
 ## Dataset types
 
@@ -142,4 +142,4 @@ workspace.enabled: true
 explore.enabled: true
 ```
 
-Enabling the Explore experience also turns on the related query and workspace settings it depends on. Additional dataset types, such as S3 and Prometheus, become available when the corresponding query-enhancement features are enabled. Once configured, create and manage datasets from the **Datasets** page inside an observability workspace.
+Enabling the Explore experience also turns on the related query and workspace settings it depends on. Additional dataset types, such as S3, become available when the corresponding query-enhancement features are enabled. Once configured, create and manage datasets from the **Datasets** page inside an observability workspace.
