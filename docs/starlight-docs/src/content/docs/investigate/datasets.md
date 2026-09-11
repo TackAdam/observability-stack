@@ -13,6 +13,7 @@ For log analytics use cases, datasets are the recommended way to define the data
 
 An index pattern identifies a set of OpenSearch indexes by name and knows their fields and time field — and nothing more. A dataset adds the context that makes logs and traces easier to work with:
 
+- **Enhanced functionality on logs and traces pages**: The Logs and Traces Discover pages consume datasets, and datasets unlock their time-based features there -- the histogram, time-range controls, and signal-specific views.
 - **Signal typing**: A dataset declares whether it holds logs or traces. OpenSearch Dashboards uses this to route the dataset to the right specialized page — a logs dataset opens in **Discover** > **Logs**, a traces dataset in **Discover** > **Traces**. Index patterns are untyped, so the experience cannot be tailored to the signal.
 - **OpenTelemetry schema mappings**: Datasets map non-standard field names to OpenTelemetry concepts (trace ID, span ID, service name, timestamp), even when the raw data does not use OpenTelemetry field names.
 - **Correlation**: Because fields are mapped to OpenTelemetry concepts, datasets power [correlations](/docs/investigate/correlations/) -- jumping from a log entry to the trace that produced it.
